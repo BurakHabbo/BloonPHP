@@ -14,6 +14,7 @@ class ConfigurationManager {
     public function __construct(string $path) {
         $this->path = $path;
         $this->reload();
+        Emulator::getLogging()->logStart("Configuration Manager -> Loaded!");
     }
 
     public function reload() {
@@ -22,15 +23,12 @@ class ConfigurationManager {
             //$this->values = $reader->fromFile($this->path); //NEED FIX
             $this->values = parse_ini_file($this->path);
         } else {
-            //better error manager and exception catch here
-            die("config file not found");
+            Emulator::getLogging()->logErrorLine("[CONFIG] Config file not found (" . $this->path . ")");
         }
 
         if ($this->loaded) {
             $this->loadFromDatabase();
         }
-
-        Emulator::getLogging()->logStart("Configuration Manager -> Loaded!");
     }
 
     public function loadFromDatabase() {

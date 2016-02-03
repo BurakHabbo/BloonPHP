@@ -4,6 +4,7 @@ namespace Emulator;
 
 use Emulator\Core\Logging;
 use Emulator\Core\ConfigurationManager;
+use Emulator\Core\TextsManager;
 use Emulator\Database\Database;
 
 class Emulator {
@@ -31,6 +32,7 @@ class Emulator {
             self::$database = new Database();
             self::$config->loadFromDatabase();
             self::$config->loaded = true;
+            self::$texts = new TextsManager();
         } catch (\Exception $e) {
             
         }

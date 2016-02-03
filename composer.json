@@ -1,0 +1,25 @@
+{
+    "name": "burak/bloon-php",
+    "description": "Habbo Post-Shuffle Emulator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Burak",
+            "email": "burak@burak.fr"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "^1.21",
+        "devster/ubench": "^1.2",
+        "respect/validation": "^1.0",
+        "zendframework/zend-config": "^2.5",
+        "phpcollection/phpcollection": "^0.4.0",
+        "phpfastcache/phpfastcache": "^3.1",
+        "react/socket": "^0.4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Emulator\\" : "Emulator"
+        }
+    }
+}

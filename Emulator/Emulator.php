@@ -29,6 +29,8 @@ class Emulator {
             self::$logging->logStart(self::$logo);
             self::$config = new ConfigurationManager("config.ini");
             self::$database = new Database();
+            self::$config->loadFromDatabase();
+            self::$config->loaded = true;
         } catch (\Exception $e) {
             
         }

@@ -8,7 +8,7 @@ use Emulator\Emulator;
 class ConfigurationManager {
 
     private $values = [];
-    private $loaded = false;
+    public $loaded = false;
     private $path = "config.ini";
 
     public function __construct(string $path) {
@@ -25,7 +25,20 @@ class ConfigurationManager {
             //better error manager and exception catch here
             die("config file not found");
         }
-        //$this->loadFromDatabase(); TO DO
+
+        if ($this->loaded) {
+            $this->loadFromDatabase();
+        }
+
+        Emulator::getLogging()->logStart("Configuration Manager -> Loaded!");
+    }
+
+    public function loadFromDatabase() {
+        $settings = Emulator::getDatabase()->query("SELECT * FROM emulator_settings;");
+
+        foreach ($settings as $setting) {
+            $this->values[$setting->key] = $setting->value;
+        }
     }
 
     public function getValue(string $key, string $defaultValue = null) {

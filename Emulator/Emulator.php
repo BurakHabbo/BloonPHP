@@ -5,6 +5,7 @@ namespace Emulator;
 use Emulator\Core\Logging;
 use Emulator\Core\ConfigurationManager;
 use Emulator\Core\TextsManager;
+use Emulator\Core\CleanerThread;
 use Emulator\Database\Database;
 
 class Emulator {
@@ -33,6 +34,7 @@ class Emulator {
             self::$config->loadFromDatabase();
             self::$config->loaded = true;
             self::$texts = new TextsManager();
+            new CleanerThread();
         } catch (\Exception $e) {
             
         }
@@ -72,6 +74,10 @@ class Emulator {
 
     public static function getPluginManager() {
         return self::$pluginManager;
+    }
+
+    public static function getIntUnixTimestamp() {
+        return time();
     }
 
 }

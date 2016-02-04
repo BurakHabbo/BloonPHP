@@ -23,35 +23,35 @@ class ClientMessage {
     }
 
     private function readLength() {
-        $this->length = HabboEncoding::DecodeBit32($this->packet);
+        $this->length = HabboEncoding::decodeByte32($this->packet);
         $this->pop(4);
 
         return $this->length;
     }
 
     private function readHeader() {
-        $this->header = HabboEncoding::DecodeBit16($this->packet);
+        $this->header = HabboEncoding::decodeByte16($this->packet);
         $this->pop(2);
 
         return $this->header;
     }
 
     public function readInt32() {
-        $int32 = HabboEncoding::DecodeBit32($this->packet);
+        $int32 = HabboEncoding::decodeByte32($this->packet);
         $this->pop(4);
 
         return $int32;
     }
 
     public function readInt16() {
-        $int16 = HabboEncoding::DecodeBit16($this->packet);
+        $int16 = HabboEncoding::decodeByte16($this->packet);
         $this->pop(2);
 
         return $int16;
     }
 
     public function readString() {
-        $len = HabboEncoding::DecodeBit16($this->packet);
+        $len = HabboEncoding::decodeByte16($this->packet);
         $string = substr($this->packet, 2, $len);
         $this->pop($len + 2);
 

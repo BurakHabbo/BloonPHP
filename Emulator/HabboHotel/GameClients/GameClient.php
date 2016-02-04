@@ -2,6 +2,8 @@
 
 namespace Emulator\HabboHotel\GameClients;
 
+use Emulator\Messages\ServerMessage;
+use Emulator\Networking\Crypto\DiffieHellman;
 use Threaded;
 
 class GameClient extends Threaded {
@@ -12,6 +14,8 @@ class GameClient extends Threaded {
     private $port;
     private $habbo;
     private $rc4initialized = false;
+    private $build;
+    private $diffieHellman;
 
     public function __construct($id, $socket, $ip, $port) {
         $this->id = $id;
@@ -20,8 +24,18 @@ class GameClient extends Threaded {
         $this->port = (int) $port;
     }
 
+    public function sendResponse(ServerMessage $message) {
+        $this->write($message->get());
+    }
+
+    public function sendResponses(array $messages) {
+        foreach ($messages as $message) {
+            $this->write($message->get());
+        }
+    }
+
     public function write($data) {
-        fwrite($this->socket, $data);
+        fwrite($this->socket, $data, strlen($data));
     }
 
     public function dispose() {
@@ -32,6 +46,19 @@ class GameClient extends Threaded {
                 $this->habbo->disconnect();
             }
         }
+    }
+
+    public function initDH() {
+        $this->diffieHellman = new DiffieHellman();
+        $this->diffieHellman->generateDH();
+    }
+
+    public function getPrime() {
+        return $this->diffieHellman->getPrime();
+    }
+
+    public function getGenerator() {
+        return $this->diffieHellman->getGenerator();
     }
 
     public function rc4initialized() {
@@ -52,6 +79,14 @@ class GameClient extends Threaded {
 
     function setHabbo($habbo) {
         $this->habbo = $habbo;
+    }
+
+    function getBuild() {
+        return $this->build;
+    }
+
+    function setBuild($build) {
+        $this->build = $build;
     }
 
 }

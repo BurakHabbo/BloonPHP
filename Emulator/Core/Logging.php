@@ -14,4 +14,8 @@ class Logging {
         print($line . PHP_EOL);
     }
 
+    public function logPacketLine(string $line) {
+        print("[\033[34mPACKET\033[0m]" . $line . PHP_EOL);
+    }
+
 }

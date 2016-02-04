@@ -8,7 +8,7 @@ use Emulator\Messages\ClientMessage;
 class ReleaseVersionMessageEvent {
 
     public function __construct(GameClient $client, ClientMessage $packet) {
-        print($packet->readString() . PHP_EOL);
+        $client->setBuild($packet->readString());
     }
 
 }

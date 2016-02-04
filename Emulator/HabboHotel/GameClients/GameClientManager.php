@@ -2,8 +2,6 @@
 
 namespace Emulator\HabboHotel\GameClients;
 
-require 'Emulator/HabboHotel/GameClients/GameClient.php';
-
 use Emulator\HabboHotel\GameClients\GameClient;
 use Threaded;
 

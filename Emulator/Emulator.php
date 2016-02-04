@@ -36,7 +36,7 @@ class Emulator {
             self::$config->loaded = true;
             self::$texts = new TextsManager();
             //new CleanerThread()->start();
-            self::$gameServer = new GameServer(self::$config->getValue("game.host", "127.0.0.1"), self::$config->getInt("game.port", 3000));
+            self::$gameServer = new GameServer(self::$config->getValue("game.host", "127.0.0.1"), self::$config->getInt("game.port", 3000), self::$logging);
             self::$gameServer->start();
         } catch (\Exception $e) {
             

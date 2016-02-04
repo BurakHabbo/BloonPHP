@@ -10,10 +10,8 @@ use Emulator\HabboHotel\GameClients\GameClientManager;
 use Emulator\Messages\PacketManager;
 use Emulator\Messages\ClientMessage;
 use Emulator\Networking\Protocol\HabboEncoding;
-
-/* Thread don't support namespace autoloading */
-require 'Emulator/Networking/Protocol/HabboEncoding.php';
-require 'Emulator/Messages/ClientMessage.php';
+use Emulator\Networking\Crypto\RSA;
+use Emulator\Networking\Crypto\RSAKey;
 
 class GameServer extends Thread {
 
@@ -23,17 +21,26 @@ class GameServer extends Thread {
     private $sockets;
     private $packetManager;
     private $gameClientManager;
+    private $logging;
+    private $rsaKey;
+    public static $rsa;
 
-    public function __construct(string $host, int $port) {
+    public function __construct(string $host, int $port, $logging) {
         $this->host = $host;
         $this->port = $port;
-        $this->packetManager = new PacketManager();
+        $this->logging = $logging;
+        $this->packetManager = new PacketManager($logging);
         $this->gameClientManager = new GameClientManager();
+        $this->rsaKey = new RSAKey();
+        self::$rsa = new RSA();
+        self::$rsa->setPrivate($this->rsaKey->getN(), $this->rsaKey->getE(), $this->rsaKey->getD());
         $this->server = stream_socket_server("tcp://" . $this->host . ":" . $this->port, $errno, $errorMessage);
         stream_set_blocking($this->server, 0);
     }
 
     public function run() {
+        self::$rsa = new RSA();
+        self::$rsa->setPrivate($this->rsaKey->getN(), $this->rsaKey->getE(), $this->rsaKey->getD());
         /* Need some improvement here, I know is weak :p */
         $sockets = array();
         while (true) {
@@ -61,7 +68,6 @@ class GameServer extends Thread {
                 if (!$buffer) {
                     unset($sockets[array_search($sock, $sockets)]);
                     $this->gameClientManager->disposeClient((int) $sock);
-                    echo "A client disconnected. Now there are total " . count($sockets) . " clients.\n";
                     continue;
                 }
 
@@ -85,6 +91,10 @@ class GameServer extends Thread {
             $buffer = substr($buffer, $len);
         }
         return $packets;
+    }
+
+    public static function getRSA() {
+        return self::$rsa;
     }
 
 }

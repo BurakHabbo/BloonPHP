@@ -40,4 +40,14 @@ class HabboEncoding {
         return $result;
     }
 
+    public static function encodeString(string $string) {
+        return self::encodeByte16(strlen($string)) . $string;
+    }
+
+    public static function encodeBoolean(bool $bool) {
+        if ($bool)
+            return chr(1);
+        return chr(0);
+    }
+
 }

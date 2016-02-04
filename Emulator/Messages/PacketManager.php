@@ -2,8 +2,13 @@
 
 namespace Emulator\Messages;
 
+use Emulator\Messages\ClientMessage;
 use Emulator\Messages\Incoming\ClientPacketHeader;
 use Emulator\Messages\Incoming\Handshake\ReleaseVersionMessageEvent;
+use Emulator\HabboHotel\GameClients\GameClient;
+
+/* Thread don't support namespace autoloading */
+require 'Emulator/Messages/Incoming/Handshake/ReleaseVersionMessageEvent.php';
 
 class PacketManager {
 
@@ -16,6 +21,16 @@ class PacketManager {
 
     public function registerHandler(int $header, $handler) {
         $this->incoming[$header] = $handler;
+    }
+
+    public function handlePacket(GameClient $client, ClientMessage $packet) {
+        if ($client == null) {
+            return;
+        }
+
+        if ($this->isRegistered($packet->getHeader())) {
+            new $this->incoming[$packet->getHeader()]($client, $packet);
+        }
     }
 
     public function isRegistered(int $header) {

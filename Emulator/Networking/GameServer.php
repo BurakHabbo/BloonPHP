@@ -8,6 +8,12 @@ use Thread;
 use Emulator\Emulator;
 use Emulator\HabboHotel\GameClients\GameClientManager;
 use Emulator\Messages\PacketManager;
+use Emulator\Messages\ClientMessage;
+use Emulator\Networking\Protocol\HabboEncoding;
+
+/* Thread don't support namespace autoloading */
+require 'Emulator/Networking/Protocol/HabboEncoding.php';
+require 'Emulator/Messages/ClientMessage.php';
 
 class GameServer extends Thread {
 
@@ -63,7 +69,10 @@ class GameServer extends Thread {
                     $gameClient->write('<?xml version="1.0"?><!DOCTYPE cross-domain-policy SYSTEM "/xml/dtds/cross-domain-policy.dtd"><cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>' . chr(0));
                     continue;
                 }
-                $gameClient->write($buffer);
+
+                foreach ($this->bufferParser($buffer) as $packet) {
+                    $this->packetManager->handlePacket($gameClient, new ClientMessage($packet));
+                }
             }
         }
     }
@@ -71,7 +80,7 @@ class GameServer extends Thread {
     public function bufferParser($buffer) {
         $packets = array();
         while (strlen($buffer) > 3) {
-            $len = HabboEncoding::DecodeBit32($buffer) + 4;
+            $len = HabboEncoding::decodeByte32($buffer) + 4;
             $packets[] = substr($buffer, 0, $len);
             $buffer = substr($buffer, $len);
         }

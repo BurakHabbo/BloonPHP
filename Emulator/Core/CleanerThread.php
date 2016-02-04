@@ -33,13 +33,10 @@ class CleanerThread extends Thread {
         self::$LAST_CALLBACK = Emulator::getIntUnixTimestamp();
 
         $this->databaseCleanup();
-        $this->start();
     }
 
     public function run() {
-        while (true) {
-            sleep(30);
-        }
+        
     }
 
     public function databaseCleanup() {

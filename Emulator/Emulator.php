@@ -7,6 +7,7 @@ use Emulator\Core\ConfigurationManager;
 use Emulator\Core\TextsManager;
 use Emulator\Core\CleanerThread;
 use Emulator\Database\Database;
+use Emulator\Networking\GameServer;
 
 class Emulator {
 
@@ -34,7 +35,9 @@ class Emulator {
             self::$config->loadFromDatabase();
             self::$config->loaded = true;
             self::$texts = new TextsManager();
-            new CleanerThread();
+            //new CleanerThread()->start();
+            self::$gameServer = new GameServer(self::$config->getValue("game.host", "127.0.0.1"), self::$config->getInt("game.port", 3000));
+            self::$gameServer->start();
         } catch (\Exception $e) {
             
         }

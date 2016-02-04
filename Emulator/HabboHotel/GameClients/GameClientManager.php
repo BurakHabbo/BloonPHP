@@ -31,8 +31,7 @@ class GameClientManager extends Threaded {
     }
 
     public function addClient($id, $socket, $ip, $port) {
-        $client = new GameClient($id, $socket, $ip, $port);
-        $this->clients[$id] = $client;
+        $this->clients[$id] = new GameClient($id, $socket, $ip, $port);
         return true;
     }
 

@@ -7,6 +7,7 @@ use React\Socket\Server;
 use Thread;
 use Emulator\Emulator;
 use Emulator\HabboHotel\GameClients\GameClientManager;
+use Emulator\Messages\PacketManager;
 
 class GameServer extends Thread {
 
@@ -14,17 +15,20 @@ class GameServer extends Thread {
     private $port;
     private $server;
     private $sockets;
+    private $packetManager;
     private $gameClientManager;
 
     public function __construct(string $host, int $port) {
         $this->host = $host;
         $this->port = $port;
+        $this->packetManager = new PacketManager();
         $this->gameClientManager = new GameClientManager();
         $this->server = stream_socket_server("tcp://" . $this->host . ":" . $this->port, $errno, $errorMessage);
         stream_set_blocking($this->server, 0);
     }
 
     public function run() {
+        /* Need some improvement here, I know is weak :p */
         $sockets = array();
         while (true) {
             $read_socks = $sockets;
@@ -59,9 +63,19 @@ class GameServer extends Thread {
                     $gameClient->write('<?xml version="1.0"?><!DOCTYPE cross-domain-policy SYSTEM "/xml/dtds/cross-domain-policy.dtd"><cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>' . chr(0));
                     continue;
                 }
-                $gameClient->write($data);
+                $gameClient->write($buffer);
             }
         }
+    }
+
+    public function bufferParser($buffer) {
+        $packets = array();
+        while (strlen($buffer) > 3) {
+            $len = HabboEncoding::DecodeBit32($buffer) + 4;
+            $packets[] = substr($buffer, 0, $len);
+            $buffer = substr($buffer, $len);
+        }
+        return $packets;
     }
 
 }

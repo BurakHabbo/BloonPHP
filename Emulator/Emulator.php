@@ -8,6 +8,8 @@ use Emulator\Core\TextsManager;
 use Emulator\Core\CleanerThread;
 use Emulator\Database\Database;
 use Emulator\Networking\GameServer;
+use Emulator\HabboHotel\GameEnvironment;
+use Ubench;
 
 class Emulator {
 
@@ -27,6 +29,8 @@ class Emulator {
 
     public static function start() {
         try {
+            $bench = new Ubench();
+            $bench->start();
             self::$stopped = false;
             self::$logging = new Logging();
             self::$logging->logStart(self::$logo);
@@ -36,8 +40,15 @@ class Emulator {
             self::$config->loaded = true;
             self::$texts = new TextsManager();
             //new CleanerThread()->start();
+            self::$gameEnvironment = new GameEnvironment();
+            self::$gameEnvironment->load();
             self::$gameServer = new GameServer(self::$config->getValue("game.host", "127.0.0.1"), self::$config->getInt("game.port", 3000), self::$logging);
             self::$gameServer->start();
+
+            $bench->end();
+            self::$logging->logStart("Habbo Hotel Emulator has succesfully loaded.");
+            self::$logging->logStart("You're running: Version: 1.0");
+            self::$logging->logStart("System launched in: " . $bench->getTime());
         } catch (\Exception $e) {
             
         }

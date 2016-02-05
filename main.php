@@ -3,7 +3,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'vendor/autoload.php';
+if (file_exists('vendor/autoload.php')) {
+    require 'vendor/autoload.php';
+} else {
+    die("Please install composer and run 'composer install' !" . PHP_EOL);
+}
 
 function rglob($pattern = '*', $path = '', $flags = 0) {
     $paths = glob($path . '*', GLOB_MARK | GLOB_ONLYDIR | GLOB_NOSORT);

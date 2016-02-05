@@ -4,6 +4,8 @@ namespace Emulator\HabboHotel\Items;
 
 use Emulator\HabboHotel\Items\Interactions\InteractionDefault;
 use Emulator\HabboHotel\Items\ItemInteraction;
+use Emulator\HabboHotel\Items\CrackableReward;
+use Emulator\HabboHotel\Items\SoundTrack;
 use Emulator\HabboHotel\Items\Item;
 use Emulator\Emulator;
 use Ubench;
@@ -28,6 +30,8 @@ class ItemManager {
 
         $this->loadItemInteractions();
         $this->loadItems();
+        $this->loadCrackable();
+        $this->loadSoundTracks();
 
         $bench->end();
         Emulator::getLogging()->logStart("Item Manager -> Loaded! (" . $bench->getTime() . ")");
@@ -41,7 +45,27 @@ class ItemManager {
         $query = Emulator::getDatabase()->query("SELECT * FROM items_base ORDER BY id DESC;");
 
         foreach ($query as $item) {
-            $this->items[$item->id] = new Item($item);
+            $this->items[(int) $item->id] = new Item($item);
+        }
+    }
+
+    public function loadCrackable() {
+        unset($this->crackableRewards);
+
+        $query = Emulator::getDatabase()->query("SELECT * FROM items_crackable;");
+
+        foreach ($query as $item) {
+            $this->crackableRewards[(int) $item->item_id] = new CrackableReward($item);
+        }
+    }
+
+    public function loadSoundTracks() {
+        unset($this->soundTracks);
+
+        $query = Emulator::getDatabase()->query("SELECT * FROM soundtracks;");
+
+        foreach ($query as $soundtrack) {
+            $this->soundTracks[$soundtrack->code] = new SoundTrack($soundtrack);
         }
     }
 

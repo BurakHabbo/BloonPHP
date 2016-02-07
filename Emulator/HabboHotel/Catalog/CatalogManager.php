@@ -71,6 +71,7 @@ class CatalogManager {
         $this->loadCatalogItems();
         $this->loadVouchers();
         $this->loadRecycler();
+        $this->loadGiftWrappers();
     }
 
     private function loadCatalogPages() {
@@ -243,6 +244,26 @@ class CatalogManager {
                 }
                 $this->prizes[(int) $prize->rarity][] = $item;
             }
+        }
+    }
+
+    private function loadGiftWrappers() {
+        unset($this->giftWrappers);
+        $this->giftWrappers = array();
+
+        $query = Emulator::getDatabase()->query("SELECT * FROM gift_wrappers WHERE type = ? ORDER BY sprite_id DESC;", array("wrapper"));
+
+        foreach ($query as $gift) {
+            $this->giftWrappers[(int) $gift->sprite_id] = (int) $gift->item_id;
+        }
+
+        unset($this->giftFurnis);
+        $this->giftFurnis = array();
+
+        $query = Emulator::getDatabase()->query("SELECT * FROM gift_wrappers WHERE type = ? ORDER BY sprite_id DESC;", array("gift"));
+
+        foreach ($query as $gift) {
+            $this->giftFurnis[(int) $gift->sprite_id] = (int) $gift->item_id;
         }
     }
 

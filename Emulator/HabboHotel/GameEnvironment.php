@@ -7,6 +7,7 @@ use Emulator\HabboHotel\HotelView\HotelViewManager;
 use Emulator\HabboHotel\Guilds\GuildManager;
 use Emulator\HabboHotel\Items\ItemManager;
 use Emulator\HabboHotel\Catalog\CatalogManager;
+use Emulator\HabboHotel\Rooms\RoomManager;
 use Emulator\Emulator;
 
 class GameEnvironment {
@@ -39,6 +40,7 @@ class GameEnvironment {
         $this->itemManager = new ItemManager();
         $this->itemManager->load();
         $this->catalogManager = new CatalogManager();
+        $this->roomManager = new RoomManager();
         Emulator::getLogging()->logStart("GameEnvironment -> Loaded!");
     }
 

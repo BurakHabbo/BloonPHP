@@ -3,6 +3,7 @@
 namespace Emulator\HabboHotel\Catalog;
 
 use Emulator\Messages\ServerMessage;
+use Emulator\HabboHotel\Catalog\CatalogItem;
 
 abstract class CatalogPage {
 
@@ -56,7 +57,7 @@ abstract class CatalogPage {
         $this->offerIds[] = $id;
     }
 
-    public function addItem($item) {
+    public function addItem(CatalogItem $item) {
         $this->catalogItems[$item->getId()] = $item;
     }
 
@@ -142,6 +143,10 @@ abstract class CatalogPage {
 
     public function getCatalogItems() {
         return $this->catalogItems;
+    }
+
+    public function getCatalogItem(int $id) {
+        return isset($this->catalogItems[$id]) ? $this->catalogItems[$id] : null;
     }
 
     abstract protected function serialize(ServerMessage $message);

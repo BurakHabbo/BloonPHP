@@ -32,6 +32,7 @@ use Emulator\HabboHotel\Catalog\Layouts\TraxLayout;
 use Emulator\HabboHotel\Catalog\Layouts\ColorGroupingLayout;
 use Emulator\HabboHotel\Catalog\Layouts\RecentPurchasesLayout;
 use Emulator\HabboHotel\Catalog\Layouts\PetCustomizationLayout;
+use Emulator\HabboHotel\Catalog\CatalogItem;
 use Emulator\Emulator;
 use Ubench;
 
@@ -190,7 +191,7 @@ class CatalogManager {
             }
 
             if (strpos($item->catalog_name, "HABBO_CLUB_") !== false) {
-                //$this->clubItems[] = new CatalogItem();
+                $this->clubItems[] = new CatalogItem($item);
             }
 
             if (!isset($this->catalogPages[(int) $item->page_id])) {
@@ -198,6 +199,20 @@ class CatalogManager {
             }
 
             $page = $this->catalogPages[(int) $item->page_id];
+            $itemx = $page->getCatalogItem((int) $item->id);
+
+            if ($itemx == null) {
+                CatalogManager::$catalogItemCount++;
+                $itemx = new CatalogItem($item);
+                $page->addItem($itemx);
+                if ($itemx->getOfferId() == -1) {
+                    continue;
+                }
+                $page->addOfferId($itemx->getOfferId());
+                $this->offerDefs[$itemx->getOfferId()] = $page->getId();
+                continue;
+            }
+            $itemx->update($item);
         }
     }
 

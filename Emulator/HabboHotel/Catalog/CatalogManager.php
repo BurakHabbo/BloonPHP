@@ -33,6 +33,7 @@ use Emulator\HabboHotel\Catalog\Layouts\ColorGroupingLayout;
 use Emulator\HabboHotel\Catalog\Layouts\RecentPurchasesLayout;
 use Emulator\HabboHotel\Catalog\Layouts\PetCustomizationLayout;
 use Emulator\HabboHotel\Catalog\CatalogItem;
+use Emulator\HabboHotel\Catalog\Voucher;
 use Emulator\Emulator;
 use Ubench;
 
@@ -68,6 +69,7 @@ class CatalogManager {
     public function initialize() {
         $this->loadCatalogPages();
         $this->loadCatalogItems();
+        $this->loadVouchers();
     }
 
     private function loadCatalogPages() {
@@ -213,6 +215,16 @@ class CatalogManager {
                 continue;
             }
             $itemx->update($item);
+        }
+    }
+
+    private function loadVouchers() {
+        unset($this->vouchers);
+        $this->vouchers = array();
+        $query = Emulator::getDatabase()->query("SELECT * FROM vouchers;");
+
+        foreach ($query as $voucher) {
+            $this->vouchers[] = new Voucher($voucher);
         }
     }
 

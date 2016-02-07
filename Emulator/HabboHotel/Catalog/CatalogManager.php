@@ -66,6 +66,7 @@ class CatalogManager {
 
     public function initialize() {
         $this->loadCatalogPages();
+        $this->loadCatalogItems();
     }
 
     private function loadCatalogPages() {
@@ -174,6 +175,29 @@ class CatalogManager {
                     $this->catalogPages[(int) $page->id] = new PetCustomizationLayout($page);
                     break;
             }
+        }
+    }
+
+    private function loadCatalogItems() {
+        unset($this->clubItems);
+        $this->clubItems = array();
+        CatalogManager::$catalogItemCount = 0;
+        $query = Emulator::getDatabase()->query("SELECT * FROM catalog_items;");
+
+        foreach ($query as $item) {
+            if ($item->item_ids == "1") {
+                continue;
+            }
+
+            if (strpos($item->catalog_name, "HABBO_CLUB_") !== false) {
+                //$this->clubItems[] = new CatalogItem();
+            }
+
+            if (!isset($this->catalogPages[(int) $item->page_id])) {
+                continue;
+            }
+
+            $page = $this->catalogPages[(int) $item->page_id];
         }
     }
 

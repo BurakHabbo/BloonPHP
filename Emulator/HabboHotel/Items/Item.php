@@ -79,4 +79,92 @@ class Item {
         }
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getSpriteId() {
+        return $this->spriteId;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
+
+    public function getWidth() {
+        return $this->width;
+    }
+
+    public function getLength() {
+        return $this->length;
+    }
+
+    public function getHeight() {
+        return $this->height;
+    }
+
+    public function getAllowStack() {
+        return $this->allowStack;
+    }
+
+    public function getAllowWalk() {
+        return $this->allowWalk;
+    }
+
+    public function getAllowSit() {
+        return $this->allowSit;
+    }
+
+    public function getAllowLay() {
+        return $this->allowLay;
+    }
+
+    public function getAllowRecyle() {
+        return $this->allowRecyle;
+    }
+
+    public function getAllowTrade() {
+        return $this->allowTrade;
+    }
+
+    public function getAllowMarketplace() {
+        return $this->allowMarketplace;
+    }
+
+    public function getAllowGift() {
+        return $this->allowGift;
+    }
+
+    public function getAllowInventoryStack() {
+        return $this->allowInventoryStack;
+    }
+
+    public function getStateCount() {
+        return $this->stateCount;
+    }
+
+    public function getEffectM() {
+        return $this->effectM;
+    }
+
+    public function getEffectF() {
+        return $this->effectF;
+    }
+
+    public function getVendingItems() {
+        return $this->vendingItems;
+    }
+
+    public function getMultiHeights() {
+        return $this->multiHeights;
+    }
+
+    public function getInteractionType() {
+        return $this->interactionType;
+    }
+
 }

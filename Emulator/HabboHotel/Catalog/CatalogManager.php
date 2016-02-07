@@ -70,6 +70,7 @@ class CatalogManager {
         $this->loadCatalogPages();
         $this->loadCatalogItems();
         $this->loadVouchers();
+        $this->loadRecycler();
     }
 
     private function loadCatalogPages() {
@@ -225,6 +226,23 @@ class CatalogManager {
 
         foreach ($query as $voucher) {
             $this->vouchers[] = new Voucher($voucher);
+        }
+    }
+
+    private function loadRecycler() {
+        unset($this->prizes);
+        $this->prizes = array();
+
+        $query = Emulator::getDatabase()->query("SELECT * FROM recycler_prizes;");
+
+        foreach ($query as $prize) {
+            $item = Emulator::getGameEnvironment()->getItemManager()->getItem((int) $prize->item_id);
+            if ($item != null) {
+                if (!isset($this->prizes[(int) $prize->rarity])) {
+                    $this->prizes[(int) $prize->rarity] = array();
+                }
+                $this->prizes[(int) $prize->rarity][] = $item;
+            }
         }
     }
 

@@ -79,4 +79,18 @@ class ItemManager {
         return $this->interactionsList[0];
     }
 
+    public function getItem($item) {
+        if (is_int($item)) {
+            return isset($this->items[$item]) ? $this->items[$item] : null;
+        } else if (is_string($item)) {
+            foreach ($this->items as $itm) {
+                if (strtolower($itm->getName()) == strtolower($item)) {
+                    return $itm;
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+
 }

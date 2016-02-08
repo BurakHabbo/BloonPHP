@@ -8,6 +8,9 @@ use Emulator\HabboHotel\Guilds\GuildManager;
 use Emulator\HabboHotel\Items\ItemManager;
 use Emulator\HabboHotel\Catalog\CatalogManager;
 use Emulator\HabboHotel\Rooms\RoomManager;
+use Emulator\HabboHotel\Permissions\PermissionsManager;
+use Emulator\HabboHotel\Bots\BotManager;
+use Emulator\HabboHotel\ModTool\ModToolManager;
 use Emulator\Emulator;
 
 class GameEnvironment {
@@ -41,6 +44,9 @@ class GameEnvironment {
         $this->itemManager->load();
         $this->catalogManager = new CatalogManager();
         $this->roomManager = new RoomManager();
+        $this->permissionsManager = new PermissionsManager();
+        $this->botManager = new BotManager();
+        $this->modToolManager = new ModToolManager();
         Emulator::getLogging()->logStart("GameEnvironment -> Loaded!");
     }
 

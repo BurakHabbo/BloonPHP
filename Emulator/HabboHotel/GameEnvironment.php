@@ -11,6 +11,7 @@ use Emulator\HabboHotel\Rooms\RoomManager;
 use Emulator\HabboHotel\Permissions\PermissionsManager;
 use Emulator\HabboHotel\Bots\BotManager;
 use Emulator\HabboHotel\ModTool\ModToolManager;
+use Emulator\HabboHotel\Pets\PetManager;
 use Emulator\Emulator;
 
 class GameEnvironment {
@@ -47,6 +48,7 @@ class GameEnvironment {
         $this->permissionsManager = new PermissionsManager();
         $this->botManager = new BotManager();
         $this->modToolManager = new ModToolManager();
+        $this->petManager = new PetManager();
         Emulator::getLogging()->logStart("GameEnvironment -> Loaded!");
     }
 

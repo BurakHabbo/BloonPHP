@@ -3,6 +3,7 @@
 namespace Emulator\HabboHotel\Rooms;
 
 use Emulator\HabboHotel\Rooms\RoomCategory;
+use Emulator\HabboHotel\Rooms\RoomLayout;
 use Emulator\HabboHotel\Rooms\Room;
 use Emulator\Emulator;
 use Ubench;
@@ -21,6 +22,7 @@ class RoomManager {
         $this->roomLayouts = array();
         $this->activeRooms = array();
         $this->loadRoomCategories();
+        $this->loadRoomModels();
         $this->loadPublicRooms();
 
         $bench->end();
@@ -35,6 +37,17 @@ class RoomManager {
 
         foreach ($query as $flatcat) {
             $this->roomCategories[] = new RoomCategory($flatcat);
+        }
+    }
+
+    private function loadRoomModels() {
+        unset($this->roomLayouts);
+        $this->roomLayouts = array();
+
+        $query = Emulator::getDatabase()->query("SELECT * FROM room_models;");
+
+        foreach ($query as $model) {
+            $this->roomLayouts[] = new RoomLayout($model);
         }
     }
 

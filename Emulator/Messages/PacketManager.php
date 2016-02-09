@@ -45,8 +45,8 @@ class PacketManager {
     }
 
     private function registerHandshake() {
-        $this->registerHandler(ClientPacketHeader::$ReleaseVersionMessageEvent, ReleaseVersionMessageEvent::class);
-        $this->registerHandler(ClientPacketHeader::$InitCryptoMessageEvent, InitCryptoMessageEvent::class);
+        $this->registerHandler(ClientPacketHeader::ReleaseVersionMessageEvent, ReleaseVersionMessageEvent::class);
+        $this->registerHandler(ClientPacketHeader::InitCryptoMessageEvent, InitCryptoMessageEvent::class);
     }
 
     private function cleanUp($string) {

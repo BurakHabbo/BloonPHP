@@ -8,15 +8,15 @@ class RSAKey {
     private $e = "3";
     private $d = "594E8FAF9B8E36A5B1103B3E372BD668B00205DA5D62A9152934F25AE1CF54A5C6255F93F22688434EE216A63542B94AC98391BC57254391D7F13F9AD7851C021703B238CD44EE121992AD950C020B899764A5FDDF9F09D459887AAA26BAAC08450FA6490243CAE1D7E69F372B6CAFE4C5BA0FBC095C9537E33EA795E6A848A3";
 
-    function getN() {
+    public function getN() {
         return $this->n;
     }
 
-    function getE() {
+    public function getE() {
         return $this->e;
     }
 
-    function getD() {
+    public function getD() {
         return $this->d;
     }
 

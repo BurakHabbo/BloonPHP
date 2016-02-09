@@ -9,6 +9,9 @@ use Emulator\Messages\Incoming\ClientPacketHeader;
 use Emulator\Messages\Incoming\Handshake\ReleaseVersionMessageEvent;
 use Emulator\Messages\Incoming\Handshake\InitCryptoMessageEvent;
 
+require 'Emulator/Messages/Incoming/Handshake/ReleaseVersionMessageEvent.php';
+require 'Emulator/Messages/Incoming/Handshake/InitCryptoMessageEvent.php';
+
 class PacketManager {
 
     private $incoming;

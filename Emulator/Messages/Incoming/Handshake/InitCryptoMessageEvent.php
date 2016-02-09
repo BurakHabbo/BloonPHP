@@ -7,6 +7,8 @@ use Emulator\Messages\ClientMessage;
 use Emulator\Networking\GameServer;
 use Emulator\Messages\Outgoing\Handshake\InitCryptoMessageComposer;
 
+require 'Emulator/Messages/Outgoing/Handshake/InitCryptoMessageComposer.php';
+
 class InitCryptoMessageEvent {
 
     public function __construct(GameClient $client, ClientMessage $packet) {

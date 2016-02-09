@@ -6,6 +6,8 @@ use Emulator\Messages\ServerMessage;
 use Emulator\Networking\Crypto\DiffieHellman;
 use Threaded;
 
+require 'Emulator/Networking/Crypto/DiffieHellman.php';
+
 class GameClient extends Threaded {
 
     private $id;

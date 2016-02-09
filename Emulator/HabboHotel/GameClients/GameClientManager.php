@@ -5,6 +5,8 @@ namespace Emulator\HabboHotel\GameClients;
 use Emulator\HabboHotel\GameClients\GameClient;
 use Threaded;
 
+require 'Emulator/HabboHotel/GameClients/GameClient.php';
+
 class GameClientManager extends Threaded {
 
     private $clients;

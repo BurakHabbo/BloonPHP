@@ -13,6 +13,9 @@ use Emulator\Networking\Protocol\HabboEncoding;
 use Emulator\Networking\Crypto\RSA;
 use Emulator\Networking\Crypto\RSAKey;
 
+require 'Emulator/Networking/Protocol/HabboEncoding.php';
+require 'Emulator/Messages/ClientMessage.php';
+
 class GameServer extends Thread {
 
     private $host;

@@ -6,6 +6,7 @@ use Emulator\Messages\ServerMessage;
 use Emulator\Networking\Crypto\DiffieHellman;
 use Emulator\Networking\Crypto\RC4;
 use Emulator\HabboHotel\Users\Habbo;
+use Emulator\Emulator;
 use Threaded;
 
 require 'Emulator/Networking/Crypto/DiffieHellman.php';
@@ -20,23 +21,27 @@ class GameClient extends Threaded {
     private $habbo;
     private $build;
     private $diffieHellman;
+    private $logger;
     private $rc4client;
     private $rc4server;
     private $rc4initialized = false;
 
-    public function __construct($id, $socket, $ip, $port) {
+    public function __construct($id, $socket, $ip, $port, $logger) {
         $this->id = $id;
         $this->socket = $socket;
         $this->ip = $ip;
         $this->port = (int) $port;
+        $this->logger = $logger;
     }
 
     public function sendResponse(ServerMessage $message) {
+        $this->logger->logPacketLine("[\033[33mSERVER\033[0m][" . $message->getHeader() . "] => " . $this->cleanUp($message->get()));
         $this->write($message->get());
     }
 
     public function sendResponses(array $messages) {
         foreach ($messages as $message) {
+            $this->logger->logPacketLine("[\033[33mSERVER\033[0m][" . $message->getHeader() . "] => " . $this->cleanUp($message->get()));
             $this->write($message->get());
         }
     }
@@ -56,6 +61,14 @@ class GameClient extends Threaded {
                 $this->habbo->disconnect();
             }
         }
+    }
+
+    private function cleanUp($string) {
+        for ($i = 0; $i <= 31; $i++) {
+            $string = str_replace(chr($i), "[" . $i . "]", $string);
+        }
+
+        return $string;
     }
 
     public function initDH() {
@@ -103,23 +116,23 @@ class GameClient extends Threaded {
         return $this->rc4server;
     }
 
-    function getSocket() {
+    public function getSocket() {
         return $this->socket;
     }
 
-    function getHabbo() {
+    public function getHabbo() {
         return $this->habbo;
     }
 
-    function setHabbo(Habbo $habbo) {
+    public function setHabbo(Habbo $habbo) {
         $this->habbo = $habbo;
     }
 
-    function getBuild() {
+    public function getBuild() {
         return $this->build;
     }
 
-    function setBuild(string $build) {
+    public function setBuild(string $build) {
         $this->build = $build;
     }
 

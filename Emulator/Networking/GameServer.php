@@ -58,7 +58,7 @@ class GameServer extends Thread {
                 stream_set_blocking($new_client, 0);
                 if (is_resource($new_client)) {
                     list($ip, $port) = explode(":", stream_socket_get_name($new_client, true));
-                    $this->gameClientManager->addClient((int) $new_client, $new_client, $ip, $port);
+                    $this->gameClientManager->addClient((int) $new_client, $new_client, $ip, $port, $this->logging);
                     echo 'Connection accepted from ' . stream_socket_get_name($new_client, true) . "\n";
                     $sockets[] = $new_client;
                 }

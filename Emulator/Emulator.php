@@ -3,6 +3,7 @@
 namespace Emulator;
 
 use Emulator\Core\Logging;
+use Emulator\Threading\ThreadPooling;
 use Emulator\Core\ConfigurationManager;
 use Emulator\Core\TextsManager;
 use Emulator\Core\CleanerThread;
@@ -35,6 +36,7 @@ class Emulator {
             self::$stopped = false;
             self::$logging = new Logging();
             self::$logging->logStart(self::$logo);
+            self::$threading = new ThreadPooling(Memory::getAvailableProcessors() * 2 + 100);
             self::$config = new ConfigurationManager("config.ini");
             self::$database = new Database();
             self::$config->loadFromDatabase();
@@ -52,7 +54,7 @@ class Emulator {
             self::$logging->logStart("System launched in: " . $bench->getTime());
             self::$logging->logStart("PHP Max memory : " . Memory::getMaxMemory() . "GB, physical memory : " . Memory::getPhysicalMemory() . "GB");
         } catch (\Exception $e) {
-            
+            die($e->getMessage());
         }
     }
 

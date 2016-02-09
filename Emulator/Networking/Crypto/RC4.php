@@ -2,7 +2,9 @@
 
 namespace Emulator\Networking\Crypto;
 
-class RC4 {
+use Threaded;
+
+class RC4 extends Threaded {
 
     private $key;
     private $i;
@@ -12,7 +14,7 @@ class RC4 {
     public function __construct() {
         $this->i = 0;
         $this->j = 0;
-        $this->table = Array();
+        $this->table = array();
     }
 
     public function init($key) {

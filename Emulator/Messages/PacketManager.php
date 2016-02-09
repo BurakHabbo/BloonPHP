@@ -8,9 +8,11 @@ use Emulator\Messages\ClientMessage;
 use Emulator\Messages\Incoming\ClientPacketHeader;
 use Emulator\Messages\Incoming\Handshake\ReleaseVersionMessageEvent;
 use Emulator\Messages\Incoming\Handshake\InitCryptoMessageEvent;
+use Emulator\Messages\Incoming\Handshake\GenerateSecretKeyMessageEvent;
 
 require 'Emulator/Messages/Incoming/Handshake/ReleaseVersionMessageEvent.php';
 require 'Emulator/Messages/Incoming/Handshake/InitCryptoMessageEvent.php';
+require 'Emulator/Messages/Incoming/Handshake/GenerateSecretKeyMessageEvent.php';
 
 class PacketManager {
 
@@ -47,6 +49,7 @@ class PacketManager {
     private function registerHandshake() {
         $this->registerHandler(ClientPacketHeader::ReleaseVersionMessageEvent, ReleaseVersionMessageEvent::class);
         $this->registerHandler(ClientPacketHeader::InitCryptoMessageEvent, InitCryptoMessageEvent::class);
+        $this->registerHandler(ClientPacketHeader::GenerateSecretKeyMessageEvent, GenerateSecretKeyMessageEvent::class);
     }
 
     private function cleanUp($string) {

@@ -4,9 +4,12 @@ namespace Emulator\HabboHotel\GameClients;
 
 use Emulator\Messages\ServerMessage;
 use Emulator\Networking\Crypto\DiffieHellman;
+use Emulator\Networking\Crypto\RC4;
+use Emulator\HabboHotel\Users\Habbo;
 use Threaded;
 
 require 'Emulator/Networking/Crypto/DiffieHellman.php';
+require 'Emulator/Networking/Crypto/RC4.php';
 
 class GameClient extends Threaded {
 
@@ -15,9 +18,11 @@ class GameClient extends Threaded {
     private $ip;
     private $port;
     private $habbo;
-    private $rc4initialized = false;
     private $build;
     private $diffieHellman;
+    private $rc4client;
+    private $rc4server;
+    private $rc4initialized = false;
 
     public function __construct($id, $socket, $ip, $port) {
         $this->id = $id;
@@ -36,7 +41,10 @@ class GameClient extends Threaded {
         }
     }
 
-    public function write($data) {
+    public function write(string $data) {
+        if ($this->rc4initialized) {
+            $data = $this->rc4server->parse($data);
+        }
         fwrite($this->socket, $data, strlen($data));
     }
 
@@ -63,12 +71,36 @@ class GameClient extends Threaded {
         return $this->diffieHellman->getGenerator();
     }
 
+    public function generateSharedKey(string $publicClientKey) {
+        $this->diffieHellman->generateSharedKey($publicClientKey);
+    }
+
+    public function getSharedKey(bool $bytearray = false) {
+        return $this->diffieHellman->getSharedKey($bytearray);
+    }
+
+    public function initRC4(array $sharedKey) {
+        $this->rc4client = new RC4();
+        $this->rc4client->init($sharedKey);
+        $this->rc4server = new RC4();
+        $this->rc4server->init($sharedKey);
+        $this->rc4initialized = true;
+    }
+
+    public function getPublicKey(bool $bytearray = false) {
+        return $this->diffieHellman->getPublicKey($bytearray);
+    }
+
     public function rc4initialized() {
         return $this->rc4initialized;
     }
 
-    public function enableRC4() {
-        $this->rc4initialized = true;
+    public function getRc4client() {
+        return $this->rc4client;
+    }
+
+    public function getRc4server() {
+        return $this->rc4server;
     }
 
     function getSocket() {
@@ -79,7 +111,7 @@ class GameClient extends Threaded {
         return $this->habbo;
     }
 
-    function setHabbo($habbo) {
+    function setHabbo(Habbo $habbo) {
         $this->habbo = $habbo;
     }
 
@@ -87,7 +119,7 @@ class GameClient extends Threaded {
         return $this->build;
     }
 
-    function setBuild($build) {
+    function setBuild(string $build) {
         $this->build = $build;
     }
 

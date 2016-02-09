@@ -79,6 +79,10 @@ class GameServer extends Thread {
                     continue;
                 }
 
+                if ($gameClient->rc4initialized()) {
+                    $buffer = $gameClient->getRc4client()->parse($buffer);
+                }
+
                 foreach ($this->bufferParser($buffer) as $packet) {
                     $this->packetManager->handlePacket($gameClient, new ClientMessage($packet));
                 }

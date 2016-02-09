@@ -9,6 +9,7 @@ use Emulator\Core\CleanerThread;
 use Emulator\Database\Database;
 use Emulator\Networking\GameServer;
 use Emulator\HabboHotel\GameEnvironment;
+use Emulator\Util\Memory;
 use Ubench;
 
 class Emulator {
@@ -49,6 +50,7 @@ class Emulator {
             self::$logging->logStart("Habbo Hotel Emulator has succesfully loaded.");
             self::$logging->logStart("You're running: Version: 1.0");
             self::$logging->logStart("System launched in: " . $bench->getTime());
+            self::$logging->logStart("PHP Max memory : " . Memory::getMaxMemory() . "GB, physical memory : " . Memory::getPhysicalMemory() . "GB");
         } catch (\Exception $e) {
             
         }

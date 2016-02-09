@@ -3,6 +3,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+if (!gc_enabled())
+    gc_enable();
+
 if (file_exists('vendor/autoload.php')) {
     require 'vendor/autoload.php';
 } else {

@@ -13,6 +13,8 @@ use Emulator\HabboHotel\Bots\BotManager;
 use Emulator\HabboHotel\ModTool\ModToolManager;
 use Emulator\HabboHotel\Pets\PetManager;
 use Emulator\HabboHotel\Achievements\AchievementManager;
+use Emulator\HabboHotel\Guides\GuideManager;
+use Emulator\HabboHotel\ModTool\WordFilter;
 use Emulator\Emulator;
 
 class GameEnvironment {
@@ -51,6 +53,8 @@ class GameEnvironment {
         $this->modToolManager = new ModToolManager();
         $this->petManager = new PetManager();
         $this->achievementManager = new AchievementManager();
+        $this->guideManager = new GuideManager();
+        $this->wordFilter = new WordFilter();
         Emulator::getLogging()->logStart("GameEnvironment -> Loaded!");
     }
 

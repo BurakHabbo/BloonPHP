@@ -10,7 +10,7 @@ use Emulator\Core\CleanerThread;
 use Emulator\Database\Database;
 use Emulator\Networking\GameServer;
 use Emulator\HabboHotel\GameEnvironment;
-use Emulator\Util\Memory;
+use Emulator\Util\System;
 use Ubench;
 
 class Emulator {
@@ -36,7 +36,7 @@ class Emulator {
             self::$stopped = false;
             self::$logging = new Logging();
             self::$logging->logStart(self::$logo);
-            self::$threading = new ThreadPooling(Memory::getAvailableProcessors() * 2 + 100);
+            self::$threading = new ThreadPooling(System::getAvailableProcessors() * 2 + 100);
             self::$config = new ConfigurationManager("config.ini");
             self::$database = new Database(self::$config);
             self::$config->loadFromDatabase();
@@ -52,7 +52,7 @@ class Emulator {
             self::$logging->logStart("Habbo Hotel Emulator has succesfully loaded.");
             self::$logging->logStart("You're running: Version: 1.0");
             self::$logging->logStart("System launched in: " . $bench->getTime());
-            self::$logging->logStart("PHP Max memory : " . Memory::getMaxMemory() . "GB, physical memory : " . Memory::getPhysicalMemory() . "GB");
+            self::$logging->logStart("PHP Max memory : " . System::getMaxMemory() . "GB, physical memory : " . System::getPhysicalMemory() . "GB");
         } catch (\Exception $e) {
             die($e->getMessage());
         }

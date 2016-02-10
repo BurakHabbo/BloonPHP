@@ -2,7 +2,9 @@
 
 namespace Emulator\Util;
 
-class Memory {
+use COM;
+
+class System {
 
     public static function getPhysicalMemory() {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {

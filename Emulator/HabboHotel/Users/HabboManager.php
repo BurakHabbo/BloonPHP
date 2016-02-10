@@ -7,14 +7,18 @@ use Emulator\HabboHotel\GameClients\GameClient;
 use Emulator\Emulator;
 use Ubench;
 
+require 'Emulator/HabboHotel/Users/Habbo.php';
+
 class HabboManager {
 
     private $onlineHabbos;
+    private $gameEnvironment;
 
-    public function __construct() {
+    public function __construct($gameEnvironment) {
         $bench = new Ubench();
         $bench->start();
 
+        $this->gameEnvironment = $gameEnvironment;
         $this->onlineHabbos = array();
 
         $bench->end();
@@ -44,7 +48,7 @@ class HabboManager {
     }
 
     public function loadHabbo(string $sso, GameClient $client) {
-        $query = Emulator::getDatabase()->query("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1;", array($sso));
+        $query = $this->gameEnvironment->getDatabase()->query("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1;", array($sso));
 
         if (count($query) == 0) {
             return null;

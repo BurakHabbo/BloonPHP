@@ -9,18 +9,22 @@ use Emulator\Messages\Incoming\ClientPacketHeader;
 use Emulator\Messages\Incoming\Handshake\ReleaseVersionMessageEvent;
 use Emulator\Messages\Incoming\Handshake\InitCryptoMessageEvent;
 use Emulator\Messages\Incoming\Handshake\GenerateSecretKeyMessageEvent;
+use Emulator\Messages\Incoming\Handshake\SSOTicketMessageEvent;
 
 require 'Emulator/Messages/Incoming/Handshake/ReleaseVersionMessageEvent.php';
 require 'Emulator/Messages/Incoming/Handshake/InitCryptoMessageEvent.php';
 require 'Emulator/Messages/Incoming/Handshake/GenerateSecretKeyMessageEvent.php';
+require 'Emulator/Messages/Incoming/Handshake/SSOTicketMessageEvent.php';
 
 class PacketManager {
 
     private $incoming;
     private $logging;
+    private $gameEnvironment;
 
-    public function __construct($logging) {
+    public function __construct($logging, $gameEnvironment) {
         $this->logging = $logging;
+        $this->gameEnvironment = $gameEnvironment;
         $this->incoming = array();
         $this->registerHandshake();
     }
@@ -36,7 +40,7 @@ class PacketManager {
 
         if ($this->isRegistered($packet->getHeader())) {
             $this->logging->logPacketLine("[\033[36mCLIENT\033[0m][" . $packet->getHeader() . "] => " . $this->cleanUp($packet->getFullPacket()));
-            new $this->incoming[$packet->getHeader()]($client, $packet);
+            new $this->incoming[$packet->getHeader()]($client, $packet, $this->gameEnvironment);
         } else {
             $this->logging->logPacketLine("[\033[36mCLIENT\033[0m][\033[31mUNDEFINED\033[0m][" . $packet->getHeader() . "] => " . $this->cleanUp($packet->getFullPacket()));
         }
@@ -50,6 +54,7 @@ class PacketManager {
         $this->registerHandler(ClientPacketHeader::ReleaseVersionMessageEvent, ReleaseVersionMessageEvent::class);
         $this->registerHandler(ClientPacketHeader::InitCryptoMessageEvent, InitCryptoMessageEvent::class);
         $this->registerHandler(ClientPacketHeader::GenerateSecretKeyMessageEvent, GenerateSecretKeyMessageEvent::class);
+        $this->registerHandler(ClientPacketHeader::SSOTicketMessageEvent, SSOTicketMessageEvent::class);
     }
 
     private function cleanUp($string) {

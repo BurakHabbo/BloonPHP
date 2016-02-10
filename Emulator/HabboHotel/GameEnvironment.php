@@ -38,10 +38,12 @@ class GameEnvironment {
     private $creditsScheduler;
     private $pixelScheduler;
     private $pointsScheduler;
+    private $database;
 
-    public function load() {
+    public function load($database) {
         Emulator::getLogging()->logStart("GameEnvironment -> Loading...");
-        $this->habboManager = new HabboManager();
+        $this->database = $database;
+        $this->habboManager = new HabboManager($this);
         $this->hotelViewManager = new HotelViewManager();
         $this->guildManager = new GuildManager();
         $this->itemManager = new ItemManager();
@@ -56,6 +58,10 @@ class GameEnvironment {
         $this->guideManager = new GuideManager();
         $this->wordFilter = new WordFilter();
         Emulator::getLogging()->logStart("GameEnvironment -> Loaded!");
+    }
+
+    public function getDatabase() {
+        return $this->database;
     }
 
     public function getHabboManager() {

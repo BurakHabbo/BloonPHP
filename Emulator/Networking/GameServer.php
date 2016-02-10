@@ -25,14 +25,16 @@ class GameServer extends Thread {
     private $packetManager;
     private $gameClientManager;
     private $logging;
+    private $gameEnvironment;
     private $rsaKey;
     public static $rsa;
 
-    public function __construct(string $host, int $port, $logging) {
+    public function __construct(string $host, int $port, $logging, $gameEnvironment) {
         $this->host = $host;
         $this->port = $port;
         $this->logging = $logging;
-        $this->packetManager = new PacketManager($logging);
+        $this->gameEnvironment = $gameEnvironment;
+        $this->packetManager = new PacketManager($logging, $gameEnvironment);
         $this->gameClientManager = new GameClientManager();
         $this->rsaKey = new RSAKey();
         self::$rsa = new RSA();

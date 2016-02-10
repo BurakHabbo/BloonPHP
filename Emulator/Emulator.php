@@ -38,14 +38,14 @@ class Emulator {
             self::$logging->logStart(self::$logo);
             self::$threading = new ThreadPooling(Memory::getAvailableProcessors() * 2 + 100);
             self::$config = new ConfigurationManager("config.ini");
-            self::$database = new Database();
+            self::$database = new Database(self::$config);
             self::$config->loadFromDatabase();
             self::$config->loaded = true;
             self::$texts = new TextsManager();
             //new CleanerThread()->start();
             self::$gameEnvironment = new GameEnvironment();
-            self::$gameEnvironment->load();
-            self::$gameServer = new GameServer(self::$config->getValue("game.host", "127.0.0.1"), self::$config->getInt("game.port", 3000), self::$logging);
+            self::$gameEnvironment->load(self::$database);
+            self::$gameServer = new GameServer(self::$config->getValue("game.host", "127.0.0.1"), self::$config->getInt("game.port", 3000), self::$logging, self::$gameEnvironment);
             self::$gameServer->start();
 
             $bench->end();

@@ -9,17 +9,23 @@ use PDOException;
 class DatabasePool {
 
     public static $pool;
+    private $configurationManager;
 
-    public static function getConnection() {
-        if (!isset(self::$pool)) {
+    public function __construct($configurationManager) {
+        $this->configurationManager = $configurationManager;
+    }
+
+    public function getConnection() {
+        return new PDO('mysql:host=' . $this->configurationManager->getValue("db.hostname") . ';dbname=' . $this->configurationManager->getValue("db.database"), $this->configurationManager->getValue("db.username"), $this->configurationManager->getValue("db.password"), array(PDO::ATTR_PERSISTENT => true));
+        if (!isset(DatabasePool::$pool)) {
             try {
-                self::$pool = new PDO('mysql:host=' . Emulator::getConfig()->getValue("db.hostname") . ';dbname=' . Emulator::getConfig()->getValue("db.database"), Emulator::getConfig()->getValue("db.username"), Emulator::getConfig()->getValue("db.password"), array(PDO::ATTR_PERSISTENT => true));
+                DatabasePool::$pool = new PDO('mysql:host=' . $this->configurationManager->getValue("db.hostname") . ';dbname=' . $this->configurationManager->getValue("db.database"), $this->configurationManager->getValue("db.username"), $this->configurationManager->getValue("db.password"), array(PDO::ATTR_PERSISTENT => true));
             } catch (PDOException $e) {
                 Emulator::getLogging()->logErrorLine("[DATABASE] " . $e->getMessage());
                 die();
             }
         } else {
-            return self::$pool;
+            return DatabasePool::$pool;
         }
     }
 

@@ -7,12 +7,15 @@ use PDO;
 
 class Database {
 
-    public function __construct() {
-        DatabasePool::getConnection();
+    private $databasePool;
+
+    public function __construct($configurationManager) {
+        $this->databasePool = new DatabasePool($configurationManager);
+        $this->databasePool->getConnection();
     }
 
     public function query($query, $params = array()) {
-        $pool = DatabasePool::getConnection();
+        $pool = $this->databasePool->getConnection();
         $exec = $pool->prepare($query);
         $exec->execute($params);
         $result = array();
@@ -25,7 +28,7 @@ class Database {
     }
 
     public function exec($query, $params = array()) {
-        $pool = DatabasePool::getConnection();
+        $pool = $this->databasePool->getConnection();
         $exec = $pool->prepare($query);
         return $exec->execute($params);
     }

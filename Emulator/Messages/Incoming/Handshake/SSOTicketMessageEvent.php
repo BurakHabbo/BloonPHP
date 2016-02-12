@@ -14,7 +14,15 @@ class SSOTicketMessageEvent {
 
         if ($client->getHabbo() == null) {
             $habbo = $environment->getHabboManager()->loadHabbo($sso, $client);
-            var_dump($habbo);
+
+            if ($habbo != null) {
+                $client->setHabbo($habbo);
+                $client->getHabbo()->connect();
+
+                $environment->getHabboManager()->addHabbo($habbo);
+
+                $messages = array();
+            }
         }
     }
 

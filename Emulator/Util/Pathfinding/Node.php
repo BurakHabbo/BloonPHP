@@ -10,7 +10,7 @@ class Node extends AbstractNode {
         parent::__construct($xPosition, $yPosition);
     }
 
-    private function absolute($n) {
+    private function absolute($n): int {
         return $n > 0 ? $n : -$n;
     }
 

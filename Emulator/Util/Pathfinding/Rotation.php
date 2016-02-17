@@ -4,7 +4,7 @@ namespace Emulator\Util\Pathfinding;
 
 class Rotation {
 
-    public static function calculate(int $X1, int $Y1, int $X2, int $Y2) {
+    public static function calculate(int $X1, int $Y1, int $X2, int $Y2): int {
         $rotation = 0;
         if ($X1 > $X2 && $Y1 > $Y2) {
             $rotation = 7;

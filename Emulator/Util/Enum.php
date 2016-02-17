@@ -37,7 +37,7 @@ abstract class Enum implements \JsonSerializable {
      * Check if the set value on this enum is a valid value for the enum
      * @return boolean
      */
-    public static function isValid($value) {
+    public static function isValid($value): bool {
         if (!in_array($value, static::validValues())) {
             return false;
         }
@@ -50,7 +50,7 @@ abstract class Enum implements \JsonSerializable {
      * override to provide custom functionality
      * @return array
      */
-    public static function validValues() {
+    public static function validValues(): array {
         $r = new \ReflectionClass(get_called_class());
         return array_values($r->getConstants());
     }
@@ -65,7 +65,7 @@ abstract class Enum implements \JsonSerializable {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString(): string {
         return (string) $this->getValue();
     }
 

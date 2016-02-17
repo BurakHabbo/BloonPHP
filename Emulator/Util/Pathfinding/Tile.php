@@ -14,7 +14,7 @@ class Tile {
         $this->Z = (float) $z;
     }
 
-    public static function getTilesAt(int $x, int $y, int $width, int $length, int $rotation) {
+    public static function getTilesAt(int $x, int $y, int $width, int $length, int $rotation): array {
         $pointList = array();
         if ($rotation == 0 || $rotation == 4) {
             for ($i = $x; $i <= $x + ($width - 1); $i++) {
@@ -36,7 +36,7 @@ class Tile {
         return $pointList;
     }
 
-    public function copy() {
+    public function copy(): Tile {
         return new Tile($this->X, $this->Y, $this->Z);
     }
 

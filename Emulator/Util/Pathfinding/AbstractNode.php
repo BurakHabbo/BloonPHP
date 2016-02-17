@@ -32,15 +32,15 @@ abstract class AbstractNode {
         $this->yPosition = $y;
     }
 
-    public function getX() {
+    public function getX(): int {
         return $this->xPosition;
     }
 
-    public function getY() {
+    public function getY(): int {
         return $this->yPosition;
     }
 
-    public function isWalkable() {
+    public function isWalkable(): bool {
         return $this->walkable;
     }
 
@@ -48,7 +48,7 @@ abstract class AbstractNode {
         $this->walkable = $walkable;
     }
 
-    public function getPrevious() {
+    public function getPrevious(): AbstractNode {
         return $this->previous;
     }
 
@@ -60,11 +60,11 @@ abstract class AbstractNode {
         $this->movementPanelty = $movementPanelty;
     }
 
-    public function getfCosts() {
+    public function getfCosts(): int {
         return $this->gCosts + $this->hCosts;
     }
 
-    public function getgCosts() {
+    public function getgCosts(): int {
         return $this->gCosts;
     }
 

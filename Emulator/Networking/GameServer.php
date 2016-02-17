@@ -71,6 +71,7 @@ class GameServer extends Thread {
                 $gameClient = $this->gameClientManager->getClient((int) $sock);
                 $buffer = fread($sock, 4096);
                 if (!$buffer) {
+                    echo 'Connection dropped from ' . stream_socket_get_name($sock, true) . "\n";
                     unset($sockets[array_search($sock, $sockets)]);
                     $this->gameClientManager->disposeClient((int) $sock);
                     continue;

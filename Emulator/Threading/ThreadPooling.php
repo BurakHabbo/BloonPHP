@@ -20,7 +20,7 @@ class ThreadPooling {
         $this->canAdd = true;
     }
 
-    public function run(Worker $run, $delay = 0) {
+    public function run(Worker $run, int $delay = 0) {
         if ($delay == 0) {
             $this->threadPool->submit(new Worker());
         } else {
@@ -28,7 +28,7 @@ class ThreadPooling {
         }
     }
 
-    public function getThreadPool() {
+    public function getThreadPool(): Pool {
         return $this->threadPool;
     }
 

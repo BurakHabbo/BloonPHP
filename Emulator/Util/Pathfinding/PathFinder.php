@@ -7,7 +7,7 @@ use Emulator\HabboHotel\Rooms\RoomUnit;
 
 class PathFinder {
 
-    public static function getSquareInFront($x = 0, $y = 0, $rotation = 0, $offset = 1) {
+    public static function getSquareInFront(int $x = 0, int $y = 0, int $rotation = 0, int $offset = 1): Tile {
         if (($rotation %= 8) == 0) {
             return new Tile($x, $y - $offset, 0.0);
         }

@@ -58,15 +58,15 @@ class Emulator {
         }
     }
 
-    public static function getConfig() {
+    public static function getConfig(): ConfigurationManager {
         return self::$config;
     }
 
-    public static function getTexts() {
+    public static function getTexts(): TextsManager {
         return self::$texts;
     }
 
-    public static function getGameServer() {
+    public static function getGameServer(): GameServer {
         return self::$gameServer;
     }
 
@@ -74,19 +74,19 @@ class Emulator {
         return self::$rconServer;
     }
 
-    public static function getDatabase() {
+    public static function getDatabase(): Database {
         return self::$database;
     }
 
-    public static function getLogging() {
+    public static function getLogging(): Logging {
         return self::$logging;
     }
 
-    public static function getThreading() {
+    public static function getThreading(): ThreadPooling {
         return self::$threading;
     }
 
-    public static function getGameEnvironment() {
+    public static function getGameEnvironment(): GameEnvironment {
         return self::$gameEnvironment;
     }
 
@@ -94,7 +94,7 @@ class Emulator {
         return self::$pluginManager;
     }
 
-    public static function getIntUnixTimestamp() {
+    public static function getIntUnixTimestamp(): int {
         return time();
     }
 

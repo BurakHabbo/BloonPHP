@@ -6,7 +6,7 @@ use COM;
 
 class System {
 
-    public static function getPhysicalMemory() {
+    public static function getPhysicalMemory(): float {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $wmi = new COM('WinMgmts:root/cimv2');
             $res = $wmi->ExecQuery('Select TotalPhysicalMemory from Win32_ComputerSystem');
@@ -24,7 +24,7 @@ class System {
         }
     }
 
-    public static function getMaxMemory() {
+    public static function getMaxMemory(): float {
         $val = trim(ini_get('memory_limit'));
         $last = strtolower($val[strlen($val) - 1]);
         $val = (int) $val;
@@ -42,7 +42,7 @@ class System {
         return round($val, 1);
     }
 
-    public static function getAvailableProcessors() {
+    public static function getAvailableProcessors(): int {
         $numCpus = 1;
         if (is_file('/proc/cpuinfo')) {
             $cpuinfo = file_get_contents('/proc/cpuinfo');
